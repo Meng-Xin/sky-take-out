@@ -1,6 +1,7 @@
 package com.sky.controller.admin;
 
 
+import com.sky.constant.MessageConstant;
 import com.sky.result.Result;
 import com.sky.utils.AliOssUtil;
 import io.swagger.annotations.Api;
@@ -43,6 +44,6 @@ public class CommonController {
             log.error("文件上传失败：{}",e);
         }
 
-        return null;
+        return Result.error(MessageConstant.UPLOAD_FAILED);
     }
 }
