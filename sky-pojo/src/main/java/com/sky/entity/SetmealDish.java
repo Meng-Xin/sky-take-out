@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
- * 套餐菜品关系
+ * 套餐菜品关系 中间表
  */
 @Data
 @Builder
