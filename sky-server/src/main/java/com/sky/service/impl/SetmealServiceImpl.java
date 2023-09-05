@@ -6,7 +6,6 @@ import com.sky.constant.MessageConstant;
 import com.sky.constant.StatusConstant;
 import com.sky.dto.SetmealDTO;
 import com.sky.dto.SetmealPageQueryDTO;
-import com.sky.entity.Dish;
 import com.sky.entity.Setmeal;
 import com.sky.entity.SetmealDish;
 import com.sky.exception.DeletionNotAllowedException;
@@ -101,7 +100,46 @@ public class SetmealServiceImpl implements SetmealService {
      */
     public void onOrClose(Long id, Integer status){
         // 使用通用动态SQL 修改当前套餐状态
-        Dish dish = Dish.builder().id(id).status(status).build();
-        setmealMapper.update(dish);
+        Setmeal setmeal = Setmeal.builder().id(id).status(status).build();
+        setmealMapper.update(setmeal);
+    }
+
+    /**
+     * 根据套餐id查询包含的菜品信息
+     * @param id
+     * @return
+     */
+    public SetmealVO getByIdWithDish(Long id){
+        // 1.根据id查询当前的套餐信息
+        Setmeal setmeal = setmealMapper.getById(id);
+        // 2.根据套餐id查询关联的菜品
+        List<SetmealDish> setmealDishList =  setmealDishMapper.getByDish(id);
+        // 使用beanutils组装信息
+        SetmealVO setmealVO = new SetmealVO();
+        BeanUtils.copyProperties(setmeal,setmealVO);
+        setmealVO.setSetmealDishes(setmealDishList);
+        return setmealVO;
+    }
+
+
+    /**
+     * 修改套餐信息
+     * @param setmealDTO
+     */
+    @Transactional
+    public void update(SetmealDTO setmealDTO){
+        // 1.修改套餐基础信息
+        Setmeal setmeal = new Setmeal();
+        BeanUtils.copyProperties(setmealDTO,setmeal);
+        setmealMapper.update(setmeal);
+        // 2.修改套餐关联信息
+        // 2.1删除原有的套餐菜品信息。
+        List<SetmealDish> setmealDishes =  setmealDTO.getSetmealDishes();
+        setmealDishes.forEach(setmealDish ->{
+            setmealDish.setSetmealId(setmeal.getId());
+            setmealDishMapper.deleteBySetmealId(setmeal.getId());
+        });
+        // 2.2 使用前端传递的新的菜品信息进行批量插入
+        setmealDishMapper.insertBatch(setmealDishes);
     }
 }
