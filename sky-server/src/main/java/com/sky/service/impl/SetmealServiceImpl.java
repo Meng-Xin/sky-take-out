@@ -6,6 +6,7 @@ import com.sky.constant.MessageConstant;
 import com.sky.constant.StatusConstant;
 import com.sky.dto.SetmealDTO;
 import com.sky.dto.SetmealPageQueryDTO;
+import com.sky.entity.Dish;
 import com.sky.entity.Setmeal;
 import com.sky.entity.SetmealDish;
 import com.sky.exception.DeletionNotAllowedException;
@@ -91,5 +92,16 @@ public class SetmealServiceImpl implements SetmealService {
             // 2.删除中间表记录的套餐关联信息
             setmealDishMapper.deleteBySetmealId(id);
         }
+    }
+
+    /**
+     * 套餐起售、停售
+     * @param id
+     * @param status
+     */
+    public void onOrClose(Long id, Integer status){
+        // 使用通用动态SQL 修改当前套餐状态
+        Dish dish = Dish.builder().id(id).status(status).build();
+        setmealMapper.update(dish);
     }
 }
