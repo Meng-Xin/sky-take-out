@@ -11,3 +11,8 @@ sky:
     access-key-id: LTAI5tL8FcSJQdHoZUYto2nA
     access-key-secret: 7a2fl1ktHS7DeVnmLJzRT7CwJlytPu
     bucket-name: xiaoxiangzhu
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password: 123456
+    database: 0
