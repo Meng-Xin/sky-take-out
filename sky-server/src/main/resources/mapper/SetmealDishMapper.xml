@@ -18,4 +18,8 @@
            (#{sd.setmealId},#{sd.dishId},#{sd.name},#{sd.price},#{sd.copies})
        </foreach>
     </insert>
+
+    <delete id="deleteBySetmealId">
+        delete from setmeal_dish where setmeal_id = #{setmealId}
+    </delete>
 </mapper>

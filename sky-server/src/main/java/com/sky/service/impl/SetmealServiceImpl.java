@@ -2,10 +2,13 @@ package com.sky.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.sky.constant.MessageConstant;
+import com.sky.constant.StatusConstant;
 import com.sky.dto.SetmealDTO;
 import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.entity.Setmeal;
 import com.sky.entity.SetmealDish;
+import com.sky.exception.DeletionNotAllowedException;
 import com.sky.mapper.SetmealDishMapper;
 import com.sky.mapper.SetmealMapper;
 import com.sky.result.PageResult;
@@ -67,5 +70,26 @@ public class SetmealServiceImpl implements SetmealService {
         // 调用dao接口
         Page<SetmealVO> page = setmealMapper.pageQuery(setmealPageQueryDTO);
         return new PageResult(page.getTotal(),page.getResult());
+    }
+
+    /**
+     * 批量删除套餐 删除套餐表的同时还需删除中间表记录的关联信息
+     */
+    @Transactional
+    public void deleteBatch(List<Long> ids){
+        // 当前套餐是否能够删除---当前套餐是否正在售卖中？
+        for (Long id : ids){
+            Setmeal setmeal = setmealMapper.getById(id);
+            if (setmeal.getStatus() == StatusConstant.ENABLE){
+                throw new DeletionNotAllowedException(MessageConstant.SETMEAL_ON_SALE);
+            }
+        }
+        // 套餐未售卖才可删除
+        for (Long id : ids){
+            // 1.删除套餐信息
+            setmealMapper.deleteById(id);
+            // 2.删除中间表记录的套餐关联信息
+            setmealDishMapper.deleteBySetmealId(id);
+        }
     }
 }

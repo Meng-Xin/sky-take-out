@@ -33,4 +33,17 @@ public interface SetmealMapper {
      * @return
      */
     Page<SetmealVO> pageQuery(SetmealPageQueryDTO setmealPageQueryDTO);
+
+    /**
+     * 根据套餐id查询套餐详情
+     * @param id
+     * @return
+     */
+    Setmeal getById(Long id);
+
+    /**
+     * 根据套餐id删除套餐
+     * @param id
+     */
+    void deleteById(Long id);
 }
