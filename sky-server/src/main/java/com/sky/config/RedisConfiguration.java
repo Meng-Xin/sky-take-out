@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
 @Slf4j
@@ -18,7 +17,7 @@ public class RedisConfiguration {
         // 设置Redis连接工厂对象
         redisTemplate.setConnectionFactory(redisConnectionFactory);
         // 设置Redis key序列化器
-        redisTemplate.setDefaultSerializer(new StringRedisSerializer());
+//        redisTemplate.setDefaultSerializer(new StringRedisSerializer());
         return redisTemplate;
     }
 }
