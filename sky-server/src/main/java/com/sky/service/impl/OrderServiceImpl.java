@@ -17,6 +17,7 @@ import com.sky.result.PageResult;
 import com.sky.service.OrderService;
 import com.sky.utils.WeChatPayUtil;
 import com.sky.vo.OrderPaymentVO;
+import com.sky.vo.OrderStatisticsVO;
 import com.sky.vo.OrderSubmitVO;
 import com.sky.vo.OrderVO;
 import lombok.extern.slf4j.Slf4j;
@@ -232,5 +233,28 @@ public class OrderServiceImpl implements OrderService {
      */
     public void reminder(Long id){
         log.warn("暂无消息中心，无法进行催单通知。");
+    }
+
+    /**
+     * 对订单状态进行统计
+     */
+    public OrderStatisticsVO statistics(){
+        OrderStatisticsVO orderStatisticsVO = new OrderStatisticsVO();
+        // 1.查询订单表,获取所有订单数据，并组装数据
+        List<Orders> ordersList = orderMapper.list();
+        // 2.遍历数据
+        long toBeConfirmedCount = ordersList.stream()
+                .filter(orders -> orders.getStatus() == Orders.TO_BE_CONFIRMED)
+                .count();
+        long confirmedCount = ordersList.stream()
+                .filter(orders -> orders.getStatus() == Orders.CONFIRMED)
+                .count();
+        long deliveryInProgressCount = ordersList.stream()
+                .filter(orders -> orders.getStatus() == Orders.DELIVERY_IN_PROGRESS)
+                .count();
+        orderStatisticsVO.setToBeConfirmed((int)toBeConfirmedCount );
+        orderStatisticsVO.setConfirmed((int)confirmedCount );
+        orderStatisticsVO.setDeliveryInProgress((int)deliveryInProgressCount );
+        return orderStatisticsVO;
     }
 }

@@ -50,4 +50,8 @@
             <if test="endTime != null">and  checkout_time &lt; #{endTime} </if>
         </where>
     </select>
+
+    <select id="list" resultType="com.sky.entity.Orders">
+        select  * from orders
+    </select>
 </mapper>
