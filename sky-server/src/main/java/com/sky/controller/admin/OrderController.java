@@ -71,7 +71,7 @@ public class OrderController {
     /**
      * 拒单
      */
-    @PutMapping("/cancel")
+    @PutMapping("/rejection")
     @ApiOperation("管理端订单模块-拒单")
     public Result rejection(@RequestBody OrdersRejectionDTO ordersRejectionDTO){
         log.info("管理端订单模块-拒单：{}",ordersRejectionDTO);
