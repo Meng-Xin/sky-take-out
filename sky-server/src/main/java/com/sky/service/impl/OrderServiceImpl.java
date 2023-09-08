@@ -207,4 +207,21 @@ public class OrderServiceImpl implements OrderService {
         order.setPayStatus(Orders.REFUND);
         orderMapper.update(order);
     }
+
+    /**
+     * 再来一单
+     */
+    public void repetOrder(Long id){
+        // 1.查询获取原有订单数据
+        Orders sourceOrder = orderMapper.getById(id);
+        // 2.构造新的订单数进行下单，新的订单创建时间、……
+        sourceOrder.setStatus(sourceOrder.PENDING_PAYMENT);                 //设置订单初始状态
+        sourceOrder.setOrderTime(LocalDateTime.now());                      //设置订单创建时间
+        sourceOrder.setPayStatus(sourceOrder.UN_PAID);                      //设置订单初始支付状态
+        sourceOrder.setNumber(String.valueOf(System.currentTimeMillis()));   //设置订单号
+        orderMapper.insert(sourceOrder);
+        // 3.关联插入订单详情数据
+        List<OrderDetail> orderDetailList = orderDetailMapper.getByOrderId(id);
+        orderDetailMapper.insertBatch(orderDetailList);
+    }
 }

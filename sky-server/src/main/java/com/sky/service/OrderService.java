@@ -46,4 +46,5 @@ public interface OrderService {
      */
     void cancel(Orders order);
 
+    void repetOrder(Long id);
 }
