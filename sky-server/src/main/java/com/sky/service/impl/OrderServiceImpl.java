@@ -171,7 +171,7 @@ public class OrderServiceImpl implements OrderService {
         PageHelper.startPage(ordersPageQueryDTO.getPage(),ordersPageQueryDTO.getPageSize());
         Page<OrderVO> page = orderMapper.pageQuery(ordersPageQueryDTO);
 
-        // 构造详情实体类 TODO 不清楚mybits 中如何给不同的多表连接对象赋值，所以拆开查。
+        // 构造详情实体类 TODO 不清楚mybitys 中如何给不同的多表连接对象赋值，所以拆开查。
         if (page != null || page.size() > 0){
             page.forEach(order ->{
                 List<OrderDetail> orderDetails = orderDetailMapper.getByOrderId(order.getId());
@@ -180,5 +180,20 @@ public class OrderServiceImpl implements OrderService {
         }
 
         return new PageResult(page.getTotal(),page.getResult());
+    }
+
+    /**
+     * 查询订单详情
+     */
+    public OrderVO getByid(Long id){
+        // 1.获取订单数据
+        Orders orders = orderMapper.getById(id);
+        // 2.获取订单详情数据
+        List<OrderDetail> orderDetailList = orderDetailMapper.getByOrderId(id);
+        // 3.组装数据返回
+        OrderVO orderVO = new OrderVO();
+        BeanUtils.copyProperties(orders,orderVO);
+        orderVO.setOrderDetailList(orderDetailList);
+        return orderVO;
     }
 }
