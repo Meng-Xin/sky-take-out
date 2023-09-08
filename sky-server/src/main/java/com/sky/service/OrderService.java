@@ -53,9 +53,28 @@ public interface OrderService {
      */
     void reminder(Long id);
 
+    /**
+     * 订单状态统计
+     * @return
+     */
     OrderStatisticsVO statistics();
 
+    /**
+     * 接单
+     * @param ordersConfirmDTO
+     * @return
+     */
     OrderVO confirm(OrdersConfirmDTO ordersConfirmDTO);
 
+    /**
+     * 拒绝订单
+     * @param ordersRejectionDTO
+     */
     void rejection(OrdersRejectionDTO ordersRejectionDTO);
+
+    /**
+     * 完成订单
+     * @param id
+     */
+    void complete(Long id);
 }

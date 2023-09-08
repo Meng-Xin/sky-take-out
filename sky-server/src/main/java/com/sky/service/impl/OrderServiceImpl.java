@@ -289,4 +289,16 @@ public class OrderServiceImpl implements OrderService {
         // 3.更新订单状态
         orderMapper.update(orders);
     }
+
+    /**
+     * 完成订单
+     */
+    public void complete(Long id){
+        // 更新订单状态
+        Orders orders = Orders.builder()
+                .id(id)
+                .status(Orders.COMPLETED)
+                .build();
+        orderMapper.update(orders);
+    }
 }

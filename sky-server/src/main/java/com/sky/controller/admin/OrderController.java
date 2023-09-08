@@ -95,4 +95,15 @@ public class OrderController {
         orderService.cancel(orders);
         return Result.success();
     }
+
+    /**
+     * 完成订单
+     */
+    @PutMapping("/complete/{id}")
+    @ApiOperation("管理端订单模块-完成订单")
+    public Result complete(@PathVariable Long id){
+        log.info("管理端订单模块-完成订单：{}",id);
+        orderService.complete(id);
+        return Result.success();
+    }
 }
