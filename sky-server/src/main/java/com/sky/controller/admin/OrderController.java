@@ -3,6 +3,7 @@ package com.sky.controller.admin;
 
 import com.sky.dto.OrdersConfirmDTO;
 import com.sky.dto.OrdersPageQueryDTO;
+import com.sky.dto.OrdersRejectionDTO;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.OrderService;
@@ -27,7 +28,7 @@ public class OrderController {
      * 订单分页搜索 TODO 没有定时任务模块，无法根据日期查询订单信息。
      */
     @GetMapping("/conditionSearch")
-    @ApiOperation("订单分页搜索")
+    @ApiOperation("管理端订单模块-订单分页搜索")
     public Result<PageResult>conditionSearch(OrdersPageQueryDTO ordersPageQueryDTO){
         log.info("订单分页搜索：{}",ordersPageQueryDTO);
         PageResult pageResult = orderService.pageQuery(ordersPageQueryDTO);
@@ -38,7 +39,7 @@ public class OrderController {
      * 各个状态的订单数量统计
      */
     @GetMapping("/statistics")
-    @ApiOperation("管理端-各个状态的订单数量统计")
+    @ApiOperation("管理端订单模块-各个状态的订单数量统计")
     public Result<OrderStatisticsVO> statistics(){
         log.info("管理端-各个状态的订单数量统计：{}");
         OrderStatisticsVO orderStatisticsVO = orderService.statistics();
@@ -51,7 +52,7 @@ public class OrderController {
     @GetMapping("/details/{id}")
     @ApiOperation("管理端-查询订单详情")
     public Result<OrderVO> details(@PathVariable Long id){
-        log.info("管理端-查询订单详情：{}",id);
+        log.info("管理端订单模块-查询订单详情：{}",id);
         OrderVO orderVO = orderService.getByid(id);
         return Result.success(orderVO);
     }
@@ -60,10 +61,21 @@ public class OrderController {
      *  接单
      */
     @PutMapping("/confirm")
-    @ApiOperation("管理端-接单")
+    @ApiOperation("管理端订单模块-接单")
     public Result<OrderVO> confirm(@RequestBody OrdersConfirmDTO ordersConfirmDTO){
         log.info("管理端-接单：{}",ordersConfirmDTO);
         OrderVO orderVO = orderService.confirm(ordersConfirmDTO);
+        return Result.success(orderVO);
+    }
+
+    /**
+     * 拒单
+     */
+    @PutMapping("/rejection")
+    @ApiOperation("管理端订单模块-拒单")
+    public Result rejection(@RequestBody OrdersRejectionDTO ordersRejectionDTO){
+        log.info("管理端订单模块-拒单：{}",ordersRejectionDTO);
+
         return Result.success();
     }
 }
