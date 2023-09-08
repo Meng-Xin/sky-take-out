@@ -5,6 +5,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.sky.constant.MessageConstant;
 import com.sky.context.BaseContext;
+import com.sky.dto.OrdersConfirmDTO;
 import com.sky.dto.OrdersPageQueryDTO;
 import com.sky.dto.OrdersPaymentDTO;
 import com.sky.dto.OrdersSubmitDTO;
@@ -256,5 +257,23 @@ public class OrderServiceImpl implements OrderService {
         orderStatisticsVO.setConfirmed((int)confirmedCount );
         orderStatisticsVO.setDeliveryInProgress((int)deliveryInProgressCount );
         return orderStatisticsVO;
+    }
+
+    /**
+     * 商家接单
+     */
+    public OrderVO confirm(OrdersConfirmDTO ordersConfirmDTO){
+        OrderVO orderVO = new OrderVO();
+        // 获取订单信息
+        Orders orders = orderMapper.getById(ordersConfirmDTO.getId());
+        // 调整订单信息
+        orders.setStatus(Orders.CONFIRMED);                                 //订单状态（已接单）
+        orders.setEstimatedDeliveryTime(LocalDateTime.now().plusHours(1));  //设置预计送达时间
+        orderMapper.update(orders);
+        // 关联查询订单详情
+        List<OrderDetail> orderDetailList = orderDetailMapper.getByOrderId(ordersConfirmDTO.getId());
+        BeanUtils.copyProperties(orders,orderVO);
+        orderVO.setOrderDetailList(orderDetailList);
+        return orderVO;
     }
 }
