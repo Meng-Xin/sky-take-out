@@ -99,4 +99,15 @@ public class OrderController {
         orderService.repetOrder(id);
         return Result.success();
     }
+
+    /**
+     * 催单 TODO 暂无该功能具体实现。
+     */
+    @GetMapping("/reminder/{id}")
+    @ApiOperation("C端-催单")
+    public Result reminder(@PathVariable Long id){
+        log.info("C端-催单：{}",id);
+        orderService.reminder(id);
+        return Result.success();
+    }
 }
