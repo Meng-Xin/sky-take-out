@@ -85,6 +85,8 @@ public class OrderServiceImpl implements OrderService {
         order.setNumber(String.valueOf(System.currentTimeMillis()));   //设置订单号
         order.setPhone(addressBook.getPhone());    //设置订单手机号（冗余）
         order.setConsignee(addressBook.getConsignee());//设置订单收货人（冗余）
+        order.setAddress(addressBook.getDetail());  //设置详细地址
+        //order.setUserName(addressBook.);            //小程序前端没有传过来。
         order.setUserId(userId);                   //设置订单的userid
         // 1.向订单表插入一条数据
         orderMapper.insert(order);
