@@ -282,7 +282,7 @@ public class OrderServiceImpl implements OrderService {
         Orders orders = orderMapper.getById(ordersRejectionDTO.getId());
         // 2.调整订单信息
         orders.setStatus(Orders.CANCELLED);
-        orders.setRejectionReason(ordersRejectionDTO.getCancelReason());
+        orders.setRejectionReason(ordersRejectionDTO.getRejectionReason());
         orders.setCancelTime(LocalDateTime.now());
         // 3.更新订单状态
         orderMapper.update(orders);
