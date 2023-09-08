@@ -5,10 +5,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.sky.constant.MessageConstant;
 import com.sky.context.BaseContext;
-import com.sky.dto.OrdersConfirmDTO;
-import com.sky.dto.OrdersPageQueryDTO;
-import com.sky.dto.OrdersPaymentDTO;
-import com.sky.dto.OrdersSubmitDTO;
+import com.sky.dto.*;
 import com.sky.entity.*;
 import com.sky.exception.AddressBookBusinessException;
 import com.sky.exception.OrderBusinessException;
@@ -275,5 +272,19 @@ public class OrderServiceImpl implements OrderService {
         BeanUtils.copyProperties(orders,orderVO);
         orderVO.setOrderDetailList(orderDetailList);
         return orderVO;
+    }
+
+    /**
+     * 商家拒单
+     */
+    public void rejection(OrdersRejectionDTO ordersRejectionDTO){
+        // 1.查询订单信息
+        Orders orders = orderMapper.getById(ordersRejectionDTO.getId());
+        // 2.调整订单信息
+        orders.setStatus(Orders.CANCELLED);
+        orders.setRejectionReason(ordersRejectionDTO.getCancelReason());
+        orders.setCancelTime(LocalDateTime.now());
+        // 3.更新订单状态
+        orderMapper.update(orders);
     }
 }
