@@ -39,4 +39,8 @@
         </set>
         where id = #{id}
     </update>
+
+    <select id="pageQuery" resultType="com.sky.vo.OrderVO">
+        select * from orders LEFT  JOIN order_detail ON orders.id = order_detail.order_id
+    </select>
 </mapper>

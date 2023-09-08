@@ -1,6 +1,9 @@
 package com.sky.mapper;
 
+import com.github.pagehelper.Page;
+import com.sky.dto.OrdersPageQueryDTO;
 import com.sky.entity.Orders;
+import com.sky.vo.OrderVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -27,4 +30,12 @@ public interface OrderMapper {
      * @param orders
      */
     void update(Orders orders);
+
+
+    /**
+     * 历史订单分页查询 需要查询 订单and订单详情表
+     * @param ordersPageQueryDTO
+     * @return
+     */
+    Page<OrderVO> pageQuery(OrdersPageQueryDTO ordersPageQueryDTO);
 }

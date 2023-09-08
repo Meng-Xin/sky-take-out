@@ -1,8 +1,11 @@
 package com.sky.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.sky.constant.MessageConstant;
 import com.sky.context.BaseContext;
+import com.sky.dto.OrdersPageQueryDTO;
 import com.sky.dto.OrdersPaymentDTO;
 import com.sky.dto.OrdersSubmitDTO;
 import com.sky.entity.*;
@@ -10,10 +13,12 @@ import com.sky.exception.AddressBookBusinessException;
 import com.sky.exception.OrderBusinessException;
 import com.sky.exception.ShoppingCartBusinessException;
 import com.sky.mapper.*;
+import com.sky.result.PageResult;
 import com.sky.service.OrderService;
 import com.sky.utils.WeChatPayUtil;
 import com.sky.vo.OrderPaymentVO;
 import com.sky.vo.OrderSubmitVO;
+import com.sky.vo.OrderVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -154,5 +159,26 @@ public class OrderServiceImpl implements OrderService {
                 .build();
 
         orderMapper.update(orders);
+    }
+
+    /**
+     * 历史订单分页查询
+     * @param ordersPageQueryDTO
+     * @return
+     */
+    public PageResult pageQuery(OrdersPageQueryDTO ordersPageQueryDTO){
+        // 使用工具函数查询
+        PageHelper.startPage(ordersPageQueryDTO.getPage(),ordersPageQueryDTO.getPageSize());
+        Page<OrderVO> page = orderMapper.pageQuery(ordersPageQueryDTO);
+
+        // 构造详情实体类 TODO 不清楚mybits 中如何给不同的多表连接对象赋值，所以拆开查。
+        if (page != null || page.size() > 0){
+            page.forEach(order ->{
+                List<OrderDetail> orderDetails = orderDetailMapper.getByOrderId(order.getId());
+                order.setOrderDetailList(orderDetails);
+            });
+        }
+
+        return new PageResult(page.getTotal(),page.getResult());
     }
 }
