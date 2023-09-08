@@ -196,4 +196,15 @@ public class OrderServiceImpl implements OrderService {
         orderVO.setOrderDetailList(orderDetailList);
         return orderVO;
     }
+
+    /**
+     * 取消订单
+     */
+    public void cancel(Orders order){
+        // 1.将原有订单数据状态更改为取消。这里直接模拟退款成功
+        order.setStatus(Orders.CANCELLED);
+        order.setCancelTime(LocalDateTime.now());
+        order.setPayStatus(Orders.REFUND);
+        orderMapper.update(order);
+    }
 }
