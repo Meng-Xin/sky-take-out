@@ -41,6 +41,13 @@
     </update>
 
     <select id="pageQuery" resultType="com.sky.vo.OrderVO">
-        select * from orders LEFT  JOIN order_detail ON orders.id = order_detail.order_id
+        select * from orders
+        <where>
+            <if test="phone != null">and phone = #{phone} </if>
+            <if test="number != null">and number = #{number} </if>
+            <if test="status != null">and status = #{status} </if>
+            <if test="beginTime != null">and order_time &gt; #{beginTime} </if>
+            <if test="endTime != null">and  checkout_time &lt; #{endTime} </if>
+        </where>
     </select>
 </mapper>
