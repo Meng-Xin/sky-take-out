@@ -16,6 +16,7 @@ public interface OrderMapper {
 
     /**
      * 创建订单
+     *
      * @param orders
      * @return
      */
@@ -24,6 +25,7 @@ public interface OrderMapper {
 
     /**
      * 根据订单号查询订单
+     *
      * @param orderNumber
      */
     @Select("select * from orders where number = #{orderNumber}")
@@ -31,6 +33,7 @@ public interface OrderMapper {
 
     /**
      * 修改订单信息
+     *
      * @param orders
      */
     void update(Orders orders);
@@ -38,6 +41,7 @@ public interface OrderMapper {
 
     /**
      * 历史订单分页查询 需要查询 订单and订单详情表
+     *
      * @param ordersPageQueryDTO
      * @return
      */
@@ -53,8 +57,16 @@ public interface OrderMapper {
 
     /**
      * 统计营业额
+     *
      * @param map
      * @return
      */
     Double sumByMap(Map map);
+
+    /**
+     * 统计订单数量
+     *
+     * @param map
+     */
+    Integer countByMap(Map map);
 }

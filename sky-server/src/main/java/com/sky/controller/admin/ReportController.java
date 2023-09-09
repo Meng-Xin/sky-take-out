@@ -3,6 +3,7 @@ package com.sky.controller.admin;
 
 import com.sky.result.Result;
 import com.sky.service.ReportService;
+import com.sky.vo.OrderReportVO;
 import com.sky.vo.TurnoverReportVO;
 import com.sky.vo.UserReportVO;
 import io.swagger.annotations.Api;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
-import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping("/admin/report")
@@ -46,8 +46,19 @@ public class ReportController {
     @ApiOperation("管理端-用户数据统计")
     public Result<UserReportVO> userStatistics(
             @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate begin,
-            @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate end
-    ) {
+            @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate end) {
         return Result.success(reportService.getUserStatistics(begin, end));
+    }
+
+    /**
+     * 订单完成率统计
+     */
+    @GetMapping("/ordersStatistics")
+    @ApiOperation("管理端-订单完成率统计")
+    public Result<OrderReportVO> ordersStatistics(
+            @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate begin,
+            @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate end) {
+        log.info("订单完成率");
+        return Result.success(reportService.getOrderStatistics(begin, end));
     }
 }
