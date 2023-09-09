@@ -242,10 +242,20 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /**
-     * 催单 TODO 暂无消息中心，无法进行消息通知。
+     * 催单 使用websocket进行通知
      */
     public void reminder(Long id){
-        log.warn("暂无消息中心，无法进行催单通知。");
+        Orders orders = orderMapper.getById(id);
+        // 订单不存在抛异常
+        if (orders == null){
+            throw new ShoppingCartBusinessException(MessageConstant.ORDER_NOT_FOUND);
+        }
+        // 构造socket通知消息体
+        Map map = new HashMap();
+        map.put("type",2);
+        map.put("orderId",orders.getId());
+        map.put("content","订单Id："+orders.getId());
+        webSocketServer.sendToAllClient(JSON.toJSONString(map));
     }
 
     /**
