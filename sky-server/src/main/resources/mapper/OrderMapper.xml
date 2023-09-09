@@ -80,4 +80,17 @@
             <if test="status != null">and status = #{status}</if>
         </where>
     </select>
+    <select id="getSalesTop" resultType="com.sky.dto.GoodsSalesDTO">
+        SELECT od.name, SUM(od.number) AS number
+        FROM order_detail od
+        INNER JOIN orders o ON od.order_id = o.id
+        <where>
+            <if test="begin != null">and order_time &gt; #{begin}</if>
+            <if test="begin != null">and order_time &lt; #{end}</if>
+            and status = 5
+        </where>
+        GROUP BY od.name
+        ORDER BY number DESC
+        LIMIT 0,10;
+    </select>
 </mapper>
