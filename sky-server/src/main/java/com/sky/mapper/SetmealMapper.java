@@ -11,12 +11,14 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface SetmealMapper {
 
     /**
      * 根据分类id查询套餐的数量
+     *
      * @param id
      * @return
      */
@@ -25,6 +27,7 @@ public interface SetmealMapper {
 
     /**
      * 新增套餐
+     *
      * @param setmeal
      */
     @AutoFill(value = OperationType.INSERT)
@@ -32,6 +35,7 @@ public interface SetmealMapper {
 
     /**
      * 套餐的分页查询
+     *
      * @param setmealPageQueryDTO
      * @return
      */
@@ -39,6 +43,7 @@ public interface SetmealMapper {
 
     /**
      * 根据套餐id查询套餐详情
+     *
      * @param id
      * @return
      */
@@ -46,12 +51,14 @@ public interface SetmealMapper {
 
     /**
      * 根据套餐id删除套餐
+     *
      * @param id
      */
     void deleteById(Long id);
 
     /**
      * 套餐的动态更新SQL
+     *
      * @param setmeal
      */
     @AutoFill(value = OperationType.UPDATE)
@@ -59,6 +66,7 @@ public interface SetmealMapper {
 
     /**
      * 动态条件查询套餐
+     *
      * @param setmeal
      * @return
      */
@@ -66,6 +74,7 @@ public interface SetmealMapper {
 
     /**
      * 根据套餐id查询菜品选项
+     *
      * @param setmealId
      * @return
      */
@@ -73,4 +82,12 @@ public interface SetmealMapper {
             "from setmeal_dish sd left join dish d on sd.dish_id = d.id " +
             "where sd.setmeal_id = #{setmealId}")
     List<DishItemVO> getDishItemBySetmealId(Long setmealId);
+
+    /**
+     * 根据条件统计套餐数量
+     *
+     * @param map
+     * @return
+     */
+    Integer countByMap(Map map);
 }
