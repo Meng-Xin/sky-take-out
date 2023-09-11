@@ -7,12 +7,15 @@ sky:
     username: root
     password: root
   alioss:
-    endpoint: oss-cn-beijing.aliyuncs.com
-    access-key-id: LTAI5tL8FcSJQdHoZUYto2nA
-    access-key-secret: 7a2fl1ktHS7DeVnmLJzRT7CwJlytPu
-    bucket-name: xiaoxiangzhu
+    endpoint: YouOption
+    access-key-id: YouOption
+    access-key-secret: YouOption
+    bucket-name: YouOption
   redis:
     host: 127.0.0.1
     port: 6379
-    password: 123456
+    password:
     database: 0
+  wechat:
+    appid: YouOption
+    secret: YouOption
